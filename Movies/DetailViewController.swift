@@ -139,7 +139,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProt
         self.watchTrailerLabel.text = "Loading..."
         self.activityIndicatorView.startAnimating()
         self.playerView.playVideo()
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: Selector("delayedLoad"), userInfo: nil, repeats: false)
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: #selector(DetailViewController.delayedLoad), userInfo: nil, repeats: false)
         
         
     
