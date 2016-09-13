@@ -16,8 +16,8 @@ class MovieDetail {
     let runtime: Int?
     let runtimeString: String?
     let overview: String?
-    let genres: String?
-    let dateFormatter = NSDateFormatter()
+    var genres: String?
+    let dateFormatter = DateFormatter()
     let releaseDate: String?
     let voteAverage: Float?
     
@@ -40,19 +40,19 @@ class MovieDetail {
             overview = "Not Available"
         }
         
-        if results["genres"]!.count == 0 {
+        if (results["genres"]! as AnyObject).count == 0 {
             genres = "Not Available"
         } else {
-            genres = results["genres"]![0]!["name"] as? String
+            genres = ((results["genres"] as! NSArray)[0] as AnyObject)["name"] as? String
         }
         
         // get the release date
         let dateString = results["release_date"] as? String
         if dateString != "" {
             dateFormatter.dateFormat = "yyyy-MM-dd"
-            let date:NSDate! = dateFormatter.dateFromString(dateString!)
+            let date:Date! = dateFormatter.date(from: dateString!)
             dateFormatter.dateFormat = "M/d/YYYY"
-            releaseDate = dateFormatter.stringFromDate(date) as String?
+            releaseDate = dateFormatter.string(from: date) as String?
         } else {
             releaseDate = "Not Available"
         }

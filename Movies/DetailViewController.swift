@@ -9,7 +9,7 @@
 import UIKit
 import MediaPlayer
 
-class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProtocol {
+class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProtocol, YTPlayerViewDelegate {
     
     @IBOutlet var movieTitle: UILabel!
     @IBOutlet var relDate: UILabel!
@@ -22,14 +22,15 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProt
     @IBOutlet weak var watchTrailerLabel: UILabel!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
+    @IBOutlet weak var VisualEffectTopConstraint: NSLayoutConstraint!
     
     
     var api : MovieAPI!
     private let movieAPIKey = "e4fe211a5f904db8260cddc6ab6865bb"
     var movies = [MovieDetail]()
     var poster : UIImage?
-    var timer : NSTimer?
-    var detailItem: AnyObject? {
+    var timer : Timer?
+    var detailItem: Any? {
         didSet {
             // Update the view.
             self.configureView()
@@ -51,14 +52,14 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProt
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.playerView.hidden = true
-        self.playButton.hidden = true
-        self.watchTrailerLabel.hidden = true
+        self.playerView.isHidden = true
+        self.playButton.isHidden = true
+        self.watchTrailerLabel.isHidden = true
         
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        let mainQueue = NSOperationQueue.mainQueue()
+        let notificationCenter = NotificationCenter.default
+        let mainQueue = OperationQueue.main
         
-        notificationCenter.addObserverForName(UIWindowDidBecomeVisibleNotification, object: nil, queue: mainQueue) { _ in
+        notificationCenter.addObserver(forName: NSNotification.Name.UIWindowDidBecomeVisible, object: nil, queue: mainQueue) { _ in
             self.timer?.invalidate()
             self.watchTrailerLabel.text = "Watch Trailer"
             self.activityIndicatorView.stopAnimating()
@@ -66,21 +67,48 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProt
         }
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if self.view.bounds.size.width == 768.0 || self.view.bounds.size.width == 438.0 {
+            VisualEffectTopConstraint.constant = 630
+        }
+        
+        if self.view.bounds.size.width == 507.0 || self.view.bounds.size.width == 694.0 {
+            VisualEffectTopConstraint.constant = 430
+        }
+        
+        if self.view.bounds.size.width == 639.0 {
+            VisualEffectTopConstraint.constant = 980
+        }
+        
+        if self.view.bounds.size.width == 1024.0 {
+            if UIDevice.current.orientation.isLandscape {
+                VisualEffectTopConstraint.constant = 420
+            } else {
+                VisualEffectTopConstraint.constant = 980
+            }
+        }
+        
+        if self.view.bounds.size.width == 1366.0 {
+            VisualEffectTopConstraint.constant = 650
+        }
+        
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    func showAlert(error: String) {
-        let alert = UIAlertController(title: "Network Error", message: error, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (alert: UIAlertAction!) in self.navigationController?.popViewControllerAnimated(true)}))
-        UIApplication.sharedApplication().delegate?.window!?.rootViewController?.presentViewController(alert, animated: true, completion: nil)
+    func showAlert(_ error: String) {
+        let alert = UIAlertController(title: "Network Error", message: error, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        UIApplication.shared.delegate?.window!?.rootViewController?.present(alert, animated: true, completion: nil)
     }
     
-    
-    
-    func didReceiveDetailAPIResults(results: NSDictionary) {
-        dispatch_async(dispatch_get_main_queue(), {
+    func didReceiveDetailAPIResults(_ results: NSDictionary) {
+        DispatchQueue.main.async(execute: {
             
             let movie = MovieDetail(results: results)
             
@@ -96,39 +124,37 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProt
             }
             self.content.text = movie.overview
             self.posterImage.image = self.poster
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
         })
     }
     
-    func didReceiveTrailerAPIResults(results: NSDictionary) {
+    func didReceiveTrailerAPIResults(_ results: NSDictionary) {
         
         if let movieTrailer = MovieDetail.Trailer(results: results) as MovieDetail.Trailer? {
         
             if movieTrailer.trailer != nil {
           
-            dispatch_async(dispatch_get_main_queue()) {
-                self.playerView.hidden = false
-                self.playButton.hidden = false
-                self.watchTrailerLabel.hidden = false
-                self.playerView.loadWithVideoId("\(movieTrailer.trailer!)", playerVars: ["enablejsapi":1, "controls":0, "fs":0])
+            DispatchQueue.main.async {
+                self.playButton.isHidden = false
+                self.watchTrailerLabel.isHidden = false
+                self.playerView.load(withVideoId: "\(movieTrailer.trailer!)")
                 }
             
             } else {
             
-            dispatch_async(dispatch_get_main_queue()) {
-                self.playerView.hidden = true
-                self.playButton.hidden = true
-                self.watchTrailerLabel.hidden = true
+            DispatchQueue.main.async {
+                self.playerView.isHidden = true
+                self.playButton.isHidden = true
+                self.watchTrailerLabel.isHidden = true
                 }
             }
         }
     }
     
     func delayedLoad() {
-        print("Timer called")
-        let alert = UIAlertController(title: "Trailer Unavailable", message: "Please try again later.", preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-        UIApplication.sharedApplication().delegate?.window!?.rootViewController?.presentViewController(alert, animated: true, completion: nil)
+        let alert = UIAlertController(title: "Trailer Unavailable", message: "Please try again later.", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        UIApplication.shared.delegate?.window!?.rootViewController?.present(alert, animated: true, completion: nil)
         self.activityIndicatorView.stopAnimating()
         self.watchTrailerLabel.text = "Watch Trailer"
         self.playerView.stopVideo()
@@ -139,7 +165,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProt
         self.watchTrailerLabel.text = "Loading..."
         self.activityIndicatorView.startAnimating()
         self.playerView.playVideo()
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: #selector(DetailViewController.delayedLoad), userInfo: nil, repeats: false)
+        self.timer = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(DetailViewController.delayedLoad), userInfo: nil, repeats: false)
         
         
     
