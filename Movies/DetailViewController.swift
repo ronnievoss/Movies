@@ -70,19 +70,50 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProt
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        if self.view.bounds.size.width == 768.0 || self.view.bounds.size.width == 438.0 {
+        let screenWidth = view.bounds.size.width
+        let screenHeight = view.bounds.size.height
+                
+        if screenWidth == 768.0 || screenWidth == 438.0 {
             VisualEffectTopConstraint.constant = 630
         }
         
-        if self.view.bounds.size.width == 507.0 || self.view.bounds.size.width == 694.0 {
+        if screenWidth == 507.0 || screenWidth == 694.0 {
             VisualEffectTopConstraint.constant = 430
         }
         
-        if self.view.bounds.size.width == 639.0 {
+        if screenWidth == 639.0 {
             VisualEffectTopConstraint.constant = 980
         }
         
-        if self.view.bounds.size.width == 1024.0 {
+        if screenWidth == 320.0 && screenHeight == 504.0 {
+            VisualEffectTopConstraint.constant = 200
+        }
+        
+        if screenWidth == 568.0 {
+            VisualEffectTopConstraint.constant = 125
+        }
+        
+        if screenWidth == 667.0 {
+            VisualEffectTopConstraint.constant = 175
+        }
+        
+        if screenWidth == 320.0 && screenHeight == 416.0 {
+            VisualEffectTopConstraint.constant = 130
+        }
+        
+        if screenWidth == 480.0 {
+            VisualEffectTopConstraint.constant = 120
+        }
+        
+        if screenWidth == 414.0 {
+            VisualEffectTopConstraint.constant = 375
+        }
+        
+        if screenWidth == 736.0 {
+            VisualEffectTopConstraint.constant = 135
+        }
+        
+        if screenWidth == 1024.0 {
             if UIDevice.current.orientation.isLandscape {
                 VisualEffectTopConstraint.constant = 420
             } else {
@@ -90,7 +121,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProt
             }
         }
         
-        if self.view.bounds.size.width == 1366.0 {
+        if screenWidth == 1366.0 {
             VisualEffectTopConstraint.constant = 650
         }
         

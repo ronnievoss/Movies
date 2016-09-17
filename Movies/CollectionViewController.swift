@@ -35,32 +35,38 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
-        print(view.bounds.size.width)
-        
         let device = traitCollection.userInterfaceIdiom
         let orientation = UIDevice.current.orientation
         let screenWidth = view.bounds.size.width
         
         if screenWidth == 678.0 || screenWidth == 639.0 {
-            width = view.bounds.size.width / 3.5
+            width = screenWidth / 3.5
         } else if screenWidth == 981.0 || screenWidth == 694.0 {
-            width = view.bounds.size.width / 4.5
+            width = screenWidth / 4.5
         } else if screenWidth == 507.0 {
-            width = view.bounds.size.width / 3.6
+            width = screenWidth / 3.6
         } else if screenWidth == 694.0 {
-            width = view.bounds.size.width / 4.5
+            width = screenWidth / 4.5
         } else if screenWidth == 438.0 {
-            width = view.bounds.size.width / 2.3
+            width = screenWidth / 2.3
+        } else if screenWidth == 320.0 {
+            width = screenWidth / 2.4
+        } else if screenWidth == 480.0 {
+            width = screenWidth / 3.5
+        } else if screenWidth == 414.0 {
+            width = screenWidth / 2.3
+        } else if screenWidth == 768.0 {
+            width = screenWidth / 4.5
         } else if screenWidth == 1366.0 {
-            width = view.bounds.size.width / 6.2
-        } else if orientation.isLandscape && device == .pad {
-            width = view.bounds.size.width / 6
+            width = screenWidth / 6.2
+        } else if orientation.isLandscape && screenWidth == 1024.0 {
+            width = screenWidth / 5.3
+        } else if screenWidth == 1024.0 {
+            width = screenWidth / 4.2
         } else if orientation.isLandscape && device == .phone {
-            width = view.bounds.size.width / 4.4
-        } else if device == .pad {
-            width = view.bounds.size.width / 4.5
+            width = screenWidth / 4.4
         } else {
-            width = view.bounds.size.width / 2.5
+            width = screenWidth / 2.5
         }
     }
     
