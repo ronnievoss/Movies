@@ -1,14 +1,22 @@
 {
   "images" : [
     {
+      "size" : "20x20",
       "idiom" : "iphone",
       "size" : "20x20",
       "scale" : "2x"
     },
     {
+      "size" : "20x20",
       "idiom" : "iphone",
       "size" : "20x20",
       "scale" : "3x"
+    },
+    {
+      "size" : "29x29",
+      "idiom" : "iphone",
+      "filename" : "icon-29.png",
+      "scale" : "1x"
     },
     {
       "size" : "29x29",
