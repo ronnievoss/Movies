@@ -20,12 +20,12 @@ class Movies {
         self.posterPath = posterPath
     }
     
-    static func moviesWithJSON(results: NSArray) -> [Movies] {
+    static func moviesWithJSON(_ results: NSArray) -> [Movies] {
         
         var movies = [Movies]()
         if results.count>0 {
         
-            for result in results {
+            for result in results as Array {
                 
                 let id = result["id"] as? Int
                 let title = result["title"] as? String
