@@ -1,13 +1,11 @@
 {
   "images" : [
     {
-      "size" : "20x20",
       "idiom" : "iphone",
       "size" : "20x20",
       "scale" : "2x"
     },
     {
-      "size" : "20x20",
       "idiom" : "iphone",
       "size" : "20x20",
       "scale" : "3x"
