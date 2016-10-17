@@ -20,20 +20,6 @@
                ReferencedContainer = "container:Movies.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2E86AF8D1A1ADB160079CBFF"
-               BuildableName = "MoviesTests.xctest"
-               BlueprintName = "MoviesTests"
-               ReferencedContainer = "container:Movies.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction

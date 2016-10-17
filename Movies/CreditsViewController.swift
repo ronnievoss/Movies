@@ -15,15 +15,15 @@ class CreditsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let creditsText = "Credits\n\n Thank you for downloading this app!\n API Source: TMDb\n © 2015 Ronnie Voss. All rights reserved."
+        let creditsText = "Credits\n\n Thank you for downloading this app!\n API Source: TMDb\n © 2016 Ronnie Voss. All rights reserved."
         
         self.textField.text = creditsText
-        self.textField.textColor = UIColor.whiteColor()
-        self.textField.backgroundColor = UIColor.clearColor()
+        self.textField.textColor = UIColor.white
+        self.textField.backgroundColor = UIColor.clear
     }
 
     @IBAction func doneButton() {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     override func didReceiveMemoryWarning() {

@@ -10,28 +10,29 @@ import Foundation
 import UIKit
 
 @objc protocol MovieAPIProtocol {
-    optional func didReceiveAPIResults(results: NSArray)
-    optional func didReceiveDetailAPIResults(results: NSDictionary)
-    optional func didReceiveTrailerAPIResults(results: NSDictionary)
-    optional func showAlert(error: String)
+    @objc optional func didReceiveAPIResults(_ results: NSArray)
+    @objc optional func didReceiveDetailAPIResults(_ results: NSDictionary)
+    @objc optional func didReceiveTrailerAPIResults(_ results: NSDictionary)
+    @objc optional func showAlert(_ error: String)
 }
 
 class MovieAPI {
     
     var delegate : MovieAPIProtocol
     let movieAPIKey: String
+    var posterImage: UIImage!
     
     init(APIKey: String, delegate: MovieAPIProtocol) {
         self.delegate = delegate
         movieAPIKey = APIKey
     }
     
-    func nowPlayingMovies(movieListURL: NSURL?) {
+    func nowPlayingMovies(_ movieListURL: URL?) {
         
         if let movieURL = movieListURL {
             
-            let session = NSURLSession.sharedSession()
-            let task = session.dataTaskWithURL(movieURL, completionHandler: {data, response, error -> Void in
+            let session = URLSession.shared
+            let task = session.dataTask(with: movieURL, completionHandler: {data, response, error -> Void in
             
                 if(error != nil) {
                     self.delegate.showAlert!(error!.localizedDescription)
@@ -39,7 +40,7 @@ class MovieAPI {
                 }
                 
                 do {
-                    if let jsonResult = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as? NSDictionary {
+                    if let jsonResult = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as? NSDictionary {
                         
                         if let results: NSArray = jsonResult["results"] as? NSArray {
                         self.delegate.didReceiveAPIResults!(results)
@@ -57,15 +58,15 @@ class MovieAPI {
         }
     }
     
-    func searchMovies(searchString: String) {
+    func searchMovies(_ searchString: String) {
         
-        let encodedURL = searchString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.alphanumericCharacterSet())
-        let movieSearchUrl = NSURL(string: "https://api.themoviedb.org/3/search/movie?query=\(encodedURL!)&api_key=e4fe211a5f904db8260cddc6ab6865bb")
+        let encodedURL = searchString.addingPercentEncoding(withAllowedCharacters: CharacterSet.alphanumerics)
+        let movieSearchUrl = URL(string: "https://api.themoviedb.org/3/search/movie?query=\(encodedURL!)&api_key=e4fe211a5f904db8260cddc6ab6865bb")
         
         if let movieURL = movieSearchUrl {
             
-            let session = NSURLSession.sharedSession()
-            let task = session.dataTaskWithURL(movieURL, completionHandler: {data, response, error -> Void in
+            let session = URLSession.shared
+            let task = session.dataTask(with: movieURL, completionHandler: {data, response, error -> Void in
                 
                 if(error != nil) {
                     self.delegate.showAlert!(error!.localizedDescription)
@@ -73,7 +74,7 @@ class MovieAPI {
                 }
                 
                 do {
-                    if let jsonResult = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as? NSDictionary {
+                    if let jsonResult = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as? NSDictionary {
                         
                         if let results: NSArray = jsonResult["results"] as? NSArray {
                             self.delegate.didReceiveAPIResults!(results)
@@ -92,12 +93,12 @@ class MovieAPI {
     }
 
     
-    func movieDetail(id: Int) {
+    func movieDetail(_ id: Int) {
         
-        let movieDetailUrl = NSURL(string: "https://api.themoviedb.org/3/movie/\(id)?&api_key=e4fe211a5f904db8260cddc6ab6865bb")!
-        if let movieURL = movieDetailUrl as NSURL? {
-            let session = NSURLSession.sharedSession()
-            let task = session.dataTaskWithURL(movieURL, completionHandler: {data, response, error -> Void in
+        let movieDetailUrl = URL(string: "https://api.themoviedb.org/3/movie/\(id)?&api_key=e4fe211a5f904db8260cddc6ab6865bb")!
+        if let movieURL = movieDetailUrl as URL? {
+            let session = URLSession.shared
+            let task = session.dataTask(with: movieURL, completionHandler: {data, response, error -> Void in
                 
                 if(error != nil) {
                     print(error!.localizedDescription)
@@ -106,7 +107,7 @@ class MovieAPI {
                 }
                 
                 do {
-                    if let jsonResult = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as? NSDictionary {
+                    if let jsonResult = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as? NSDictionary {
                         if let results = jsonResult as NSDictionary? {
                             self.delegate.didReceiveDetailAPIResults!(results)
                             
@@ -123,13 +124,13 @@ class MovieAPI {
         }
     }
     
-    func getTrailer(id: Int) {
+    func getTrailer(_ id: Int) {
         
-        let trailerlUrl = NSURL(string: "https://api.themoviedb.org/3/movie/\(id)/videos?&api_key=e4fe211a5f904db8260cddc6ab6865bb")
+        let trailerlUrl = URL(string: "https://api.themoviedb.org/3/movie/\(id)/videos?&api_key=e4fe211a5f904db8260cddc6ab6865bb")
         if let movieURL = trailerlUrl {
             
-            let session = NSURLSession.sharedSession()
-            let task = session.dataTaskWithURL(movieURL, completionHandler: {data, response, error -> Void in
+            let session = URLSession.shared
+            let task = session.dataTask(with: movieURL, completionHandler: {data, response, error -> Void in
                 
                 if(error != nil) {
                     // If there is an error in the web request, print it to the console
@@ -138,15 +139,15 @@ class MovieAPI {
                 }
                 
                 do {
-                    if let jsonResult = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as? NSDictionary {
-                        let resultCount = jsonResult["results"]!.count as Int
+                    if let jsonResult = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as? NSDictionary {
+                        let resultCount = (jsonResult["results"]! as AnyObject).count as Int
                         if resultCount == 0 {
-                            let results = [:]
-                            self.delegate.didReceiveTrailerAPIResults!(results)
+                            let results = [String:Any]()
+                            self.delegate.didReceiveTrailerAPIResults!(results as NSDictionary)
                         } else {
                             if let results = jsonResult["results"] as? [[String:AnyObject]] {
                                 let result = results[0]
-                                self.delegate.didReceiveTrailerAPIResults!(result)
+                                self.delegate.didReceiveTrailerAPIResults!(result as NSDictionary)
                             }
                         }
                     }
@@ -158,6 +159,20 @@ class MovieAPI {
             
             task.resume()
         }
+    }
+    
+    func getPoster(_ imageURL: URL) {
+        let session = URLSession.shared
+        let request: URLRequest = URLRequest(url: imageURL)
+        let task = session.dataTask(with: request, completionHandler: { (data, response, error) -> Void in
+            print("task completed")
+            DispatchQueue.main.async {
+            self.posterImage = UIImage(data: data!)
+            }
+            
+        })
+        
+        task.resume()
     }
     
 }
