@@ -44,7 +44,6 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProt
         // Update the user interface for the detail item.
         api = MovieAPI(APIKey: movieAPIKey, delegate: self)
         let id = self.detailItem as! Int
-        _ = self.poster
         language = "\(Locale.preferredLanguages[0])"
         
         api.movieDetail(id, language: language!)

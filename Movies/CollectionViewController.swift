@@ -29,12 +29,12 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         super.viewDidLoad()
         
         region = Locale.current.regionCode
-        language = "\(Locale.preferredLanguages[0])"
+        language = "\(Locale.preferredLanguages[0])-\(region!)"
     
         let appDelegate:AppDelegate = UIApplication.shared.delegate! as! AppDelegate
         appDelegate.myViewController = self
         api = MovieAPI(APIKey: movieAPIKey, delegate: self)
-        movieURL = URL(string: "https://api.themoviedb.org/3/movie/now_playing?&region="+region+"&page=1&language="+language+"&api_key=\(movieAPIKey)")
+        movieURL = URL(string: "https://api.themoviedb.org/3/movie/now_playing?&api_key=\(movieAPIKey)&language="+language+"&page=1&region="+region+"")
         api.nowPlayingMovies(movieURL)
         print(language,region)
     }
@@ -122,9 +122,9 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         let movie = self.movies[(indexPath as NSIndexPath).row]
         cell.movieTitle.text = movie.title
         cell.moviePoster.image = UIImage(named: "no-poster.png")
-        
+    
         let placeHolderImage = String(Bundle.main.path(forResource: "no-poster", ofType: "png")!)
-        let posterPath = movie.posterPath != "" ? String("https://image.tmdb.org/t/p/w342\(movie.posterPath!)") : placeHolderImage
+        let posterPath = movie.posterPath != "" ? String("https://image.tmdb.org/t/p/w500\(movie.posterPath!)") : placeHolderImage
         let imageURL = URL(string: posterPath!)
         if let img = imageCache[posterPath!] {
             cell.moviePoster.image = img
@@ -135,8 +135,12 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
                 if error == nil {
                     let image = UIImage(data: data!)
                     self.imageCache[posterPath!] = image
+                    cell.moviePoster.alpha = 0
                     DispatchQueue.main.async {
                         cell.moviePoster.image = image
+                        UIView.animate(withDuration: 0.5, animations: {
+                            cell.moviePoster.alpha = 1
+                        })
                     }
                 } else {
                     print("Error: \(error!.localizedDescription)")
