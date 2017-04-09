@@ -20,16 +20,23 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
     
     private let movieAPIKey = "e4fe211a5f904db8260cddc6ab6865bb"
     
+    var region: String!
+    var language: String!
+    
     var movieURL: URL?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        region = Locale.current.regionCode
+        language = "\(Locale.preferredLanguages[0])-\(region!)"
+    
         let appDelegate:AppDelegate = UIApplication.shared.delegate! as! AppDelegate
         appDelegate.myViewController = self
         api = MovieAPI(APIKey: movieAPIKey, delegate: self)
-        movieURL = URL(string: "https://api.themoviedb.org/3/movie/now_playing?&api_key=\(movieAPIKey)")
+        movieURL = URL(string: "https://api.themoviedb.org/3/movie/now_playing?&api_key=\(movieAPIKey)&language="+language+"&page=1&region="+region+"")
         api.nowPlayingMovies(movieURL)
+        print(language,region)
     }
     
     override func viewWillLayoutSubviews() {
@@ -82,8 +89,10 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
             if let indexPath = self.collectionView!.indexPath(for: cell) {
                 let id = self.movies[(indexPath as NSIndexPath).row].id
                 let image = cell.moviePoster.image
+                let releaseDate = movies[indexPath.row].releaseDate
                 (segue.destination as! DetailViewController).poster = image
                 (segue.destination as! DetailViewController).detailItem = id
+                (segue.destination as! DetailViewController).releaseDate = releaseDate
             }
         }
     }
@@ -113,9 +122,9 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         let movie = self.movies[(indexPath as NSIndexPath).row]
         cell.movieTitle.text = movie.title
         cell.moviePoster.image = UIImage(named: "no-poster.png")
-        
+    
         let placeHolderImage = String(Bundle.main.path(forResource: "no-poster", ofType: "png")!)
-        let posterPath = movie.posterPath != "" ? String("https://image.tmdb.org/t/p/w342\(movie.posterPath!)") : placeHolderImage
+        let posterPath = movie.posterPath != "" ? String("https://image.tmdb.org/t/p/w500\(movie.posterPath!)") : placeHolderImage
         let imageURL = URL(string: posterPath!)
         if let img = imageCache[posterPath!] {
             cell.moviePoster.image = img
@@ -126,8 +135,12 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
                 if error == nil {
                     let image = UIImage(data: data!)
                     self.imageCache[posterPath!] = image
+                    cell.moviePoster.alpha = 0
                     DispatchQueue.main.async {
                         cell.moviePoster.image = image
+                        UIView.animate(withDuration: 0.5, animations: {
+                            cell.moviePoster.alpha = 1
+                        })
                     }
                 } else {
                     print("Error: \(error!.localizedDescription)")
@@ -179,17 +192,17 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         switch sender.selectedSegmentIndex
         {
         case 0:
-            movieURL = URL(string: "https://api.themoviedb.org/3/movie/now_playing?&api_key=\(movieAPIKey)")
+            movieURL = URL(string: "https://api.themoviedb.org/3/movie/now_playing?&api_key=\(movieAPIKey)&language="+language+"&page=1&region="+region+"")
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
             api.nowPlayingMovies(movieURL!)
             self.title = "Now Playing"
         case 1:
-            movieURL = URL(string: "https://api.themoviedb.org/3/movie/popular?&api_key=\(movieAPIKey)")
+            movieURL = URL(string: "https://api.themoviedb.org/3/movie/popular?&api_key=\(movieAPIKey)&language="+language+"&page=1&region="+region+"")
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
             api.nowPlayingMovies(movieURL!)
             self.title = "Popular"
         case 2:
-            movieURL = URL(string: "https://api.themoviedb.org/3/movie/upcoming?&api_key=\(movieAPIKey)")
+            movieURL = URL(string: "https://api.themoviedb.org/3/movie/upcoming?&api_key=\(movieAPIKey)&language="+language+"&page=1&region="+region+"")
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
             api.nowPlayingMovies(movieURL!)
             self.title = "Upcoming"

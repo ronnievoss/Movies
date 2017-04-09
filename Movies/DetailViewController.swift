@@ -29,6 +29,8 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProt
     private let movieAPIKey = "e4fe211a5f904db8260cddc6ab6865bb"
     var movies = [MovieDetail]()
     var poster : UIImage?
+    var releaseDate: String?
+    var language: String?
     var timer : Timer?
     var detailItem: Any? {
         didSet {
@@ -42,8 +44,9 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProt
         // Update the user interface for the detail item.
         api = MovieAPI(APIKey: movieAPIKey, delegate: self)
         let id = self.detailItem as! Int
-        _ = self.poster
-        api.movieDetail(id)
+        language = "\(Locale.preferredLanguages[0])"
+        
+        api.movieDetail(id, language: language!)
         api.getTrailer(id)
         self.hidesBottomBarWhenPushed = true
         
@@ -144,8 +147,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProt
             let movie = MovieDetail(results: results)
             
             self.movieTitle.text = movie.title
-            self.relDate.text = "Released: \(movie.releaseDate!)"
-            self.runtime.text = "Runtime: \(movie.runtimeString!)"
+            self.relDate.text = "Released: \(self.releaseDate!)"
             self.runtime.text = "Runtime: \(movie.runtimeString!)"
             self.category.text = "Genre: \(movie.genres!)"
             if movie.voteAverage != 0.0 {
@@ -155,6 +157,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProt
             }
             self.content.text = movie.overview
             self.posterImage.image = self.poster
+            
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
         })
     }

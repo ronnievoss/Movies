@@ -93,9 +93,9 @@ class MovieAPI {
     }
 
     
-    func movieDetail(_ id: Int) {
+    func movieDetail(_ id: Int, language: String) {
         
-        let movieDetailUrl = URL(string: "https://api.themoviedb.org/3/movie/\(id)?&api_key=e4fe211a5f904db8260cddc6ab6865bb")!
+        let movieDetailUrl = URL(string: "https://api.themoviedb.org/3/movie/\(id)?&api_key=e4fe211a5f904db8260cddc6ab6865bb&language="+language+"")!
         if let movieURL = movieDetailUrl as URL? {
             let session = URLSession.shared
             let task = session.dataTask(with: movieURL, completionHandler: {data, response, error -> Void in
@@ -159,20 +159,6 @@ class MovieAPI {
             
             task.resume()
         }
-    }
-    
-    func getPoster(_ imageURL: URL) {
-        let session = URLSession.shared
-        let request: URLRequest = URLRequest(url: imageURL)
-        let task = session.dataTask(with: request, completionHandler: { (data, response, error) -> Void in
-            print("task completed")
-            DispatchQueue.main.async {
-            self.posterImage = UIImage(data: data!)
-            }
-            
-        })
-        
-        task.resume()
     }
     
 }

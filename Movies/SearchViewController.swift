@@ -81,8 +81,10 @@ class SearchViewController: UICollectionViewController, UICollectionViewDelegate
             if let indexPath = self.collectionView!.indexPath(for: cell) {
                 let id = self.movies[(indexPath as NSIndexPath).row].id
                 let image = cell.moviePoster.image
+                let releaseDate = movies[indexPath.row].releaseDate
                 (segue.destination as! DetailViewController).poster = image
                 (segue.destination as! DetailViewController).detailItem = id
+                (segue.destination as! DetailViewController).releaseDate = releaseDate
             }
         }
     }
@@ -109,7 +111,7 @@ class SearchViewController: UICollectionViewController, UICollectionViewDelegate
         cell.moviePoster.image = UIImage(named: "no-poster.png")
         
         let placeHolderImage = String(Bundle.main.path(forResource: "no-poster", ofType: "png")!)
-        let posterPath = movie.posterPath != "" ? String("https://image.tmdb.org/t/p/w342\(movie.posterPath!)") : placeHolderImage
+        let posterPath = movie.posterPath != "" ? String("https://image.tmdb.org/t/p/w500\(movie.posterPath!)") : placeHolderImage
         let imageURL = URL(string: posterPath!)
         if let img = imageCache[posterPath!] {
             cell.moviePoster.image = img
@@ -120,8 +122,12 @@ class SearchViewController: UICollectionViewController, UICollectionViewDelegate
                 if error == nil {
                     let image = UIImage(data: data!)
                     self.imageCache[posterPath!] = image
+                    cell.moviePoster.alpha = 0
                     DispatchQueue.main.async {
                         cell.moviePoster.image = image
+                        UIView.animate(withDuration: 0.5, animations: {
+                            cell.moviePoster.alpha = 1
+                        })
                     }
                 } else {
                     print("Error: \(error!.localizedDescription)")
@@ -150,6 +156,15 @@ class SearchViewController: UICollectionViewController, UICollectionViewDelegate
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchBar.showsCancelButton = true
+        // Change searchbar cursor color to black
+        let view: UIView = searchBar.subviews[0] as UIView
+        let subViewsArray = view.subviews
+        
+        for subView: UIView in subViewsArray {
+            if subView is UITextField {
+                subView.tintColor = UIColor.black
+            }
+        }
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {

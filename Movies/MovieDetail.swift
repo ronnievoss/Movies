@@ -18,7 +18,6 @@ class MovieDetail {
     let overview: String?
     var genres: String?
     let dateFormatter = DateFormatter()
-    let releaseDate: String?
     let voteAverage: Float?
     
     init(results: NSDictionary) {
@@ -45,17 +44,6 @@ class MovieDetail {
         } else {
             genres = ((results["genres"] as! NSArray)[0] as AnyObject)["name"] as? String
         }
-        
-        // get the release date
-        let dateString = results["release_date"] as? String
-        if dateString != "" {
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            let date:Date! = dateFormatter.date(from: dateString!)
-            dateFormatter.dateFormat = "M/d/YYYY"
-            releaseDate = dateFormatter.string(from: date) as String?
-        } else {
-            releaseDate = "Not Available"
-        }
     
         posterPath = results["poster_path"] as? String
         
@@ -64,7 +52,6 @@ class MovieDetail {
         } else {
             voteAverage = 0.0
         }
-    
     }
     
     class Trailer {
