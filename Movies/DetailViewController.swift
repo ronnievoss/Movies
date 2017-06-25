@@ -185,7 +185,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProt
         }
     }
     
-    func delayedLoad() {
+    @objc func delayedLoad() {
         let alert = UIAlertController(title: "Trailer Unavailable", message: "Please try again later.", preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         UIApplication.shared.delegate?.window!?.rootViewController?.present(alert, animated: true, completion: nil)
