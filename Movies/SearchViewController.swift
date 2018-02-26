@@ -112,8 +112,8 @@ class SearchViewController: UICollectionViewController, UICollectionViewDelegate
         
         let placeHolderImage = String(Bundle.main.path(forResource: "no-poster", ofType: "png")!)
         let posterPath = movie.posterPath != "" ? String("https://image.tmdb.org/t/p/w500\(movie.posterPath!)") : placeHolderImage
-        let imageURL = URL(string: posterPath!)
-        if let img = imageCache[posterPath!] {
+        let imageURL = URL(string: posterPath)
+        if let img = imageCache[posterPath] {
             cell.moviePoster.image = img
         } else {
             let session = URLSession(configuration: URLSessionConfiguration.default)
@@ -121,9 +121,9 @@ class SearchViewController: UICollectionViewController, UICollectionViewDelegate
             let task = session.dataTask(with: request, completionHandler: { (data, response, error) -> Void in
                 if error == nil {
                     let image = UIImage(data: data!)
-                    self.imageCache[posterPath!] = image
-                    cell.moviePoster.alpha = 0
+                    self.imageCache[posterPath] = image
                     DispatchQueue.main.async {
+                        cell.moviePoster.alpha = 0
                         cell.moviePoster.image = image
                         UIView.animate(withDuration: 0.5, animations: {
                             cell.moviePoster.alpha = 1

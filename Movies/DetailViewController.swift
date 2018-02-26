@@ -157,8 +157,6 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProt
             }
             self.content.text = movie.overview
             self.posterImage.image = self.poster
-            
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
         })
     }
     
