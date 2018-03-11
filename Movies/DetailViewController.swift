@@ -32,20 +32,13 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProt
     var releaseDate: String?
     var language: String?
     var timer : Timer?
-    var detailItem: Any? {
-        didSet {
-            // Update the view.
-            self.configureView()
-            
-        }
-    }
+    var detailItem: Any?
     
     func configureView() {
         // Update the user interface for the detail item.
         api = MovieAPI(APIKey: movieAPIKey, delegate: self)
         let id = self.detailItem as! Int
         language = "\(Locale.preferredLanguages[0])"
-        
         api.movieDetail(id, language: language!)
         api.getTrailer(id)
         self.hidesBottomBarWhenPushed = true
@@ -55,6 +48,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProt
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.configureView()
         self.playerView.isHidden = true
         self.playButton.isHidden = true
         self.watchTrailerLabel.isHidden = true
@@ -127,7 +121,6 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProt
         if screenWidth == 1366.0 {
             VisualEffectTopConstraint.constant = 650
         }
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -142,22 +135,24 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProt
     }
     
     func didReceiveDetailAPIResults(_ results: NSDictionary) {
-        DispatchQueue.main.async(execute: {
+        
+        if let movie = MovieDetail(results: results) as MovieDetail? {
             
-            let movie = MovieDetail(results: results)
-            
-            self.movieTitle.text = movie.title
-            self.relDate.text = "Released: \(self.releaseDate!)"
-            self.runtime.text = "Runtime: \(movie.runtimeString!)"
-            self.category.text = "Genre: \(movie.genres!)"
-            if movie.voteAverage != 0.0 {
-                self.popularityLabel.text = "Popularity: \(movie.voteAverage!)★"
-            } else {
-                self.popularityLabel.text = "Popularity: Not Available"
-            }
-            self.content.text = movie.overview
-            self.posterImage.image = self.poster
-        })
+            DispatchQueue.main.async(execute: {
+                
+                self.movieTitle.text = movie.title
+                self.relDate.text = "Released: \(self.releaseDate!)"
+                self.runtime.text = "Runtime: \(movie.runtimeString!)"
+                self.category.text = "Genre: \(movie.genres!)"
+                if movie.voteAverage != 0.0 {
+                    self.popularityLabel.text = "Popularity: \(movie.voteAverage!)★"
+                } else {
+                    self.popularityLabel.text = "Popularity: Not Available"
+                }
+                self.content.text = movie.overview
+                self.posterImage.image = self.poster
+            })
+        }
     }
     
     func didReceiveTrailerAPIResults(_ results: NSDictionary) {
@@ -184,7 +179,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProt
     }
     
     @objc func delayedLoad() {
-        let alert = UIAlertController(title: "Trailer Unavailable", message: "Please try again later.", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Trailer currently unavailable", message: "Please try again later.", preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         UIApplication.shared.delegate?.window!?.rootViewController?.present(alert, animated: true, completion: nil)
         self.activityIndicatorView.stopAnimating()
