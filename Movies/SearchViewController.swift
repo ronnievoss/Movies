@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SearchViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, MovieAPIProtocol, UITextFieldDelegate, UISearchBarDelegate, UISearchControllerDelegate {
+class SearchViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, MovieAPIProtocol, UITextFieldDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     
     @IBOutlet private var flowLayout: UICollectionViewFlowLayout!
     
@@ -16,13 +16,24 @@ class SearchViewController: UICollectionViewController, UICollectionViewDelegate
     var movies = [Movies]()
     var imageCache = [String:UIImage]()
     var movieSearch = ""
-    var searchController: UISearchController!
+    var noDataLabel: UILabel!
     private var width: CGFloat!
+    let searchController = UISearchController(searchResultsController: nil)
     
     private let movieAPIKey = "e4fe211a5f904db8260cddc6ab6865bb"
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        searchController.searchBar.placeholder = "Enter Movie Title"
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchBar.tintColor = UIColor.white
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        self.definesPresentationContext = true
         api = MovieAPI(APIKey: movieAPIKey, delegate: self)
     }
     
@@ -32,6 +43,7 @@ class SearchViewController: UICollectionViewController, UICollectionViewDelegate
         let device = traitCollection.userInterfaceIdiom
         let orientation = UIDevice.current.orientation
         let screenWidth = view.bounds.size.width
+        noDataLabel.center = self.view.center
         
         if screenWidth == 678.0 || screenWidth == 639.0 {
             width = screenWidth / 3.5
@@ -69,11 +81,6 @@ class SearchViewController: UICollectionViewController, UICollectionViewDelegate
         flowLayout.invalidateLayout() // Called to update the cell sizes to fit the new collection view width
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "showDetail" {
@@ -85,6 +92,7 @@ class SearchViewController: UICollectionViewController, UICollectionViewDelegate
                 (segue.destination as! DetailViewController).poster = image
                 (segue.destination as! DetailViewController).detailItem = id
                 (segue.destination as! DetailViewController).releaseDate = releaseDate
+                searchController.searchBar.resignFirstResponder()
             }
         }
     }
@@ -96,6 +104,17 @@ class SearchViewController: UICollectionViewController, UICollectionViewDelegate
     // MARK: UICollectionViewDataSource
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
+        
+        if movies.count == 0 {
+            
+            noDataLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
+            noDataLabel.center = self.view.center
+            noDataLabel.font = UIFont.systemFont(ofSize: 30)
+            noDataLabel.text = "No Results"
+            noDataLabel.textColor = UIColor.white
+            noDataLabel.textAlignment = NSTextAlignment.center
+            self.view.addSubview(noDataLabel)
+        }
         return 1
     }
     
@@ -104,8 +123,8 @@ class SearchViewController: UICollectionViewController, UICollectionViewDelegate
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "movieCell", for: indexPath) as! MovieCellCollectionViewCell
         
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "movieCell", for: indexPath) as! MovieCellCollectionViewCell
         let movie = self.movies[(indexPath as NSIndexPath).row]
         cell.movieTitle.text = movie.title
         cell.moviePoster.image = UIImage(named: "no-poster.png")
@@ -141,8 +160,8 @@ class SearchViewController: UICollectionViewController, UICollectionViewDelegate
     func didReceiveAPIResults(_ results: NSArray) {
         DispatchQueue.main.async(execute: {
             self.movies = Movies.moviesWithJSON(results)
-            self.collectionView!.reloadData()
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            self.collectionView?.reloadData()
+            self.noDataLabel.removeFromSuperview()
         })
     }
     
@@ -155,59 +174,19 @@ class SearchViewController: UICollectionViewController, UICollectionViewDelegate
     // MARK: UISearchBarDelegate
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchBar.showsCancelButton = true
-        // Change searchbar cursor color to black
-        let view: UIView = searchBar.subviews[0] as UIView
-        let subViewsArray = view.subviews
-        
-        for subView: UIView in subViewsArray {
-            if subView is UITextField {
-                subView.tintColor = UIColor.black
-            }
-        }
-    }
-    
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        searchBar.showsCancelButton = false
+        searchBar.returnKeyType = .done
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        movieSearch = searchBar.text!
         searchBar.resignFirstResponder()
-        //searchBar.text = ""
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        movieSearch = searchController.searchBar.text!
+        if searchController.searchBar.text == "" {
+            movieSearch = " "
+        }
         api.searchMovies(movieSearch)
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.text = ""
-        searchBar.showsCancelButton = false
-        self.collectionView?.reloadData()
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView,
-        viewForSupplementaryElementOfKind kind: String,
-        at indexPath: IndexPath) -> UICollectionReusableView {
-            
-            switch kind {
-                
-            case UICollectionElementKindSectionHeader:
-                
-                let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                    withReuseIdentifier: "SearchHeaderView",
-                    for: indexPath)
-                    as! SearchHeaderView
-                movieSearch = headerView.searchBar.text!
-                
-                (self.collectionView?.collectionViewLayout as! UICollectionViewFlowLayout).sectionHeadersPinToVisibleBounds = true
-
-                return headerView
-                
-            default:
-                
-                fatalError("Unexpected element kind")
-                
-            }
     }
     
 }

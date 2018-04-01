@@ -22,8 +22,8 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
     
     var region: String!
     var language: String!
-    
     var movieURL: URL?
+    private let refreshControl = UIRefreshControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +36,8 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         api = MovieAPI(APIKey: movieAPIKey, delegate: self)
         movieURL = URL(string: "https://api.themoviedb.org/3/movie/now_playing?&api_key=\(movieAPIKey)&language="+language+"&page=1&region="+region+"")
         api.nowPlayingMovies(movieURL)
+        collectionView?.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(self.refreshData), for: .valueChanged)
         print(language,region)
     }
     
@@ -75,11 +77,6 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         } else {
             width = screenWidth / 2.5
         }
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -156,6 +153,7 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
             self.movies = Movies.moviesWithJSON(results)
             self.collectionView!.reloadData()
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            self.refreshControl.endRefreshing()
         })
     }
     
@@ -185,6 +183,10 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
             default:
                 fatalError("Unexpected element kind")
             }
+    }
+    
+    @objc private func refreshData() {
+        api.nowPlayingMovies(movieURL)
     }
     
     @IBAction func indexChanged(_ sender: UISegmentedControl) {

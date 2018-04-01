@@ -11,5 +11,5 @@ import UIKit
 class SearchHeaderView: UICollectionReusableView {
         
     @IBOutlet weak var searchBar: UISearchBar!
-    
+
 }
