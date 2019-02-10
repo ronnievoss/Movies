@@ -158,7 +158,7 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
     }
     
     func showAlert(_ error: String) {
-        let alert = UIAlertController(title: "Network Error", message: error, preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Network Error", message: error, preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: false, completion: nil)
     }
@@ -169,7 +169,7 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
             
             switch kind {
                 
-            case UICollectionElementKindSectionHeader:
+            case UICollectionView.elementKindSectionHeader:
                 
                 let headerView =
                 collectionView.dequeueReusableSupplementaryView(ofKind: kind,

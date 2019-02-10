@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Rah-VF-49m">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.13.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Rah-VF-49m">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.9"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="HelveticaNeueExtras.ttc">
-            <string>HelveticaNeue-CondensedBold</string>
-        </array>
-    </customFonts>
     <scenes>
         <!--Now Playing-->
         <scene sceneID="dC7-u0-Zee">
@@ -87,7 +81,7 @@
                                     <blurEffect style="dark"/>
                                 </visualEffectView>
                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="sTc-ge-FjP">
-                                    <rect key="frame" x="25" y="6" width="325" height="29"/>
+                                    <rect key="frame" x="25" y="26" width="325" height="29"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="28" id="XdC-yP-U8X"/>
                                     </constraints>
@@ -187,6 +181,7 @@
                             <constraint firstAttribute="trailing" secondItem="sES-Go-UlO" secondAttribute="trailing" id="KXr-88-ye3"/>
                             <constraint firstItem="sES-Go-UlO" firstAttribute="top" secondItem="6eZ-wA-ciH" secondAttribute="top" id="QSi-IL-3Zf"/>
                             <constraint firstItem="Ts7-YH-ywX" firstAttribute="leading" secondItem="6eZ-wA-ciH" secondAttribute="leadingMargin" id="Vs8-Jm-cMa"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Ts7-YH-ywX" secondAttribute="trailing" constant="20" symbolic="YES" id="bGf-8O-3OW"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Fq6-Jw-e7p" secondAttribute="trailing" constant="26" id="qZL-fQ-LXi"/>
                             <constraint firstItem="BrU-nh-eS9" firstAttribute="top" secondItem="sES-Go-UlO" secondAttribute="bottom" id="vCO-xU-Fgh"/>
                         </constraints>
@@ -378,7 +373,7 @@
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Watch Trailer" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="geX-LA-BJr">
-                                                    <rect key="frame" x="266" y="120" width="85" height="17"/>
+                                                    <rect key="frame" x="265.5" y="120" width="85" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -510,7 +505,7 @@
     </scenes>
     <resources>
         <image name="billow.png" width="320" height="568"/>
-        <image name="info-icon" width="22" height="22"/>
+        <image name="info-icon" width="44" height="44"/>
         <image name="play-button.png" width="399" height="249"/>
     </resources>
     <inferredMetricsTieBreakers>

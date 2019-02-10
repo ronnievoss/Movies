@@ -56,7 +56,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProt
         let notificationCenter = NotificationCenter.default
         let mainQueue = OperationQueue.main
         
-        notificationCenter.addObserver(forName: NSNotification.Name.UIWindowDidBecomeVisible, object: nil, queue: mainQueue) { _ in
+        notificationCenter.addObserver(forName: UIWindow.didBecomeVisibleNotification, object: nil, queue: mainQueue) { _ in
             self.timer?.invalidate()
             self.watchTrailerLabel.text = "Watch Trailer"
             self.activityIndicatorView.stopAnimating()
@@ -129,7 +129,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProt
     }
     
     func showAlert(_ error: String) {
-        let alert = UIAlertController(title: "Network Error", message: error, preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Network Error", message: error, preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         UIApplication.shared.delegate?.window!?.rootViewController?.present(alert, animated: true, completion: nil)
     }
@@ -179,7 +179,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProt
     }
     
     @objc func delayedLoad() {
-        let alert = UIAlertController(title: "Trailer currently unavailable", message: "Please try again later.", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Trailer currently unavailable", message: "Please try again later.", preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         UIApplication.shared.delegate?.window!?.rootViewController?.present(alert, animated: true, completion: nil)
         self.activityIndicatorView.stopAnimating()
