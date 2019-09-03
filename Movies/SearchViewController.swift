@@ -139,12 +139,12 @@ class SearchViewController: UICollectionViewController, UICollectionViewDelegate
             let request: URLRequest = URLRequest(url: imageURL!)
             let task = session.dataTask(with: request, completionHandler: { (data, response, error) -> Void in
                 if error == nil {
-                    let image = UIImage(data: data!)
-                    self.imageCache[posterPath] = image
                     DispatchQueue.main.async {
+                        let image = UIImage(data: data!)
+                        self.imageCache[posterPath] = image
                         cell.moviePoster.alpha = 0
                         cell.moviePoster.image = image
-                        UIView.animate(withDuration: 0.5, animations: {
+                        UIView.animate(withDuration: 0.3, animations: {
                             cell.moviePoster.alpha = 1
                         })
                     }

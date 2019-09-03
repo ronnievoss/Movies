@@ -27,7 +27,7 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
         region = Locale.current.regionCode
         language = "\(Locale.preferredLanguages[0])-\(region!)"
     
@@ -38,7 +38,6 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         api.nowPlayingMovies(movieURL)
         collectionView?.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(self.refreshData), for: .valueChanged)
-        print(language,region)
     }
     
     override func viewWillLayoutSubviews() {
@@ -123,19 +122,19 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         let placeHolderImage = String(Bundle.main.path(forResource: "no-poster", ofType: "png")!)
         let posterPath = movie.posterPath != "" ? String("https://image.tmdb.org/t/p/w500\(movie.posterPath!)") : placeHolderImage
         let imageURL = URL(string: posterPath)
-        if let img = imageCache[posterPath] {
+        if let img = self.imageCache[posterPath] {
             cell.moviePoster.image = img
         } else {
             let session = URLSession(configuration: URLSessionConfiguration.default)
             let request: URLRequest = URLRequest(url: imageURL!)
             let task = session.dataTask(with: request, completionHandler: { (data, response, error) -> Void in
                 if error == nil {
-                    let image = UIImage(data: data!)
-                    self.imageCache[posterPath] = image
                     DispatchQueue.main.async {
+                        let image = UIImage(data: data!)
+                        self.imageCache[posterPath] = image
                         cell.moviePoster.alpha = 0
                         cell.moviePoster.image = image
-                        UIView.animate(withDuration: 0.5, animations: {
+                        UIView.animate(withDuration: 0.3, animations: {
                             cell.moviePoster.alpha = 1
                         })
                     }

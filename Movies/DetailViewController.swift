@@ -9,7 +9,7 @@
 import UIKit
 import MediaPlayer
 
-class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProtocol, YTPlayerViewDelegate {
+class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProtocol, WKYTPlayerViewDelegate {
     
     @IBOutlet var movieTitle: UILabel!
     @IBOutlet var relDate: UILabel!
@@ -18,7 +18,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProt
     @IBOutlet var content: UITextView!
     @IBOutlet var posterImage: UIImageView!
     @IBOutlet weak var popularityLabel: UILabel!
-    @IBOutlet var playerView: YTPlayerView!
+    @IBOutlet var playerView: WKYTPlayerView!
     @IBOutlet weak var watchTrailerLabel: UILabel!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
