@@ -28,7 +28,7 @@ class SearchViewController: UICollectionViewController, UICollectionViewDelegate
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = "Enter Movie Title"
-        searchController.dimsBackgroundDuringPresentation = false
+        searchController.obscuresBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.tintColor = UIColor.white
         navigationItem.searchController = searchController
@@ -40,40 +40,10 @@ class SearchViewController: UICollectionViewController, UICollectionViewDelegate
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
-        let device = traitCollection.userInterfaceIdiom
-        let orientation = UIDevice.current.orientation
-        let screenWidth = view.bounds.size.width
+        width = getScreenWidth()
         noDataLabel.center = self.view.center
         
-        if screenWidth == 678.0 || screenWidth == 639.0 {
-            width = screenWidth / 3.5
-        } else if screenWidth == 981.0 || screenWidth == 694.0 {
-            width = screenWidth / 4.5
-        } else if screenWidth == 507.0 {
-            width = screenWidth / 3.6
-        } else if screenWidth == 694.0 {
-            width = screenWidth / 4.5
-        } else if screenWidth == 438.0 {
-            width = screenWidth / 2.3
-        } else if screenWidth == 320.0 {
-            width = screenWidth / 2.4
-        } else if screenWidth == 480.0 {
-            width = screenWidth / 3.5
-        } else if screenWidth == 414.0 {
-            width = screenWidth / 2.3
-        } else if screenWidth == 768.0 {
-            width = screenWidth / 4.5
-        } else if screenWidth == 1366.0 {
-            width = screenWidth / 6.2
-        } else if orientation.isLandscape && screenWidth == 1024.0 {
-            width = screenWidth / 5.3
-        } else if screenWidth == 1024.0 {
-            width = screenWidth / 4.2
-        } else if orientation.isLandscape && device == .phone {
-            width = screenWidth / 4.4
-        } else {
-            width = screenWidth / 2.5
-        }
+       
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

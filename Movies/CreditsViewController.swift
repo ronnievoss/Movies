@@ -15,7 +15,7 @@ class CreditsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let creditsText = "Credits\n\n Thank you for downloading this app!\n API Source: TMDb\n © 2018 Ronnie Voss. All rights reserved."
+        let creditsText = "Credits\n\n Thank you for downloading this app!\n API Source: TMDb\n © 2019 Ronnie Voss. All rights reserved."
         
         self.textField.text = creditsText
         self.textField.textColor = UIColor.white

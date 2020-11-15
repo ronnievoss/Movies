@@ -147,7 +147,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, MovieAPIProt
                 if movie.voteAverage != 0.0 {
                     self.popularityLabel.text = "Popularity: \(movie.voteAverage!)★"
                 } else {
-                    self.popularityLabel.text = "Popularity: Not Available"
+                    self.popularityLabel.isHidden = true
                 }
                 self.content.text = movie.overview
                 self.posterImage.image = self.poster

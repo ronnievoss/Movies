@@ -34,10 +34,10 @@ class Movies {
                 let title = result["title"] as? String
                 let poster = result["poster_path"] as? String
                 let posterPath = poster != nil ? poster : ""
-                let dateString = result["release_date"] as? String
+                let dateString = result["release_date"] as? String ?? ""
                 if dateString != "" {
                     dateFormatter.dateFormat = "yyyy-MM-dd"
-                    let date:Date! = dateFormatter.date(from: dateString!)
+                    let date:Date! = dateFormatter.date(from: dateString)
                     dateFormatter.dateFormat = "M/d/YYYY"
                     releaseDate = dateFormatter.string(from: date) as String?
                 } else {

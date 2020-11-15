@@ -16,14 +16,13 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
     var api : MovieAPI!
     var movies = [Movies]()
     var imageCache = [String:UIImage]()
-    private var width: CGFloat!
     
     private let movieAPIKey = "e4fe211a5f904db8260cddc6ab6865bb"
     
     var region: String!
     var language: String!
     var movieURL: URL?
-    private let refreshControl = UIRefreshControl()
+    var width: CGFloat!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,47 +35,15 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         api = MovieAPI(APIKey: movieAPIKey, delegate: self)
         movieURL = URL(string: "https://api.themoviedb.org/3/movie/now_playing?&api_key=\(movieAPIKey)&language="+language+"&page=1&region="+region+"")
         api.nowPlayingMovies(movieURL)
-        collectionView?.refreshControl = refreshControl
-        refreshControl.addTarget(self, action: #selector(self.refreshData), for: .valueChanged)
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
-        let device = traitCollection.userInterfaceIdiom
-        let orientation = UIDevice.current.orientation
-        let screenWidth = view.bounds.size.width
-        
-        if screenWidth == 678.0 || screenWidth == 639.0 {
-            width = screenWidth / 3.5
-        } else if screenWidth == 981.0 || screenWidth == 694.0 {
-            width = screenWidth / 4.5
-        } else if screenWidth == 507.0 {
-            width = screenWidth / 3.6
-        } else if screenWidth == 694.0 {
-            width = screenWidth / 4.5
-        } else if screenWidth == 438.0 {
-            width = screenWidth / 2.3
-        } else if screenWidth == 320.0 {
-            width = screenWidth / 2.4
-        } else if screenWidth == 480.0 {
-            width = screenWidth / 3.5
-        } else if screenWidth == 414.0 {
-            width = screenWidth / 2.3
-        } else if screenWidth == 768.0 {
-            width = screenWidth / 4.5
-        } else if screenWidth == 1366.0 {
-            width = screenWidth / 6.2
-        } else if orientation.isLandscape && screenWidth == 1024.0 {
-            width = screenWidth / 5.3
-        } else if screenWidth == 1024.0 {
-            width = screenWidth / 4.2
-        } else if orientation.isLandscape && device == .phone {
-            width = screenWidth / 4.4
-        } else {
-            width = screenWidth / 2.5
-        }
+        width = getScreenWidth()
     }
+    
+    
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -151,8 +118,6 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         DispatchQueue.main.async(execute: {
             self.movies = Movies.moviesWithJSON(results)
             self.collectionView!.reloadData()
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            self.refreshControl.endRefreshing()
         })
     }
     
@@ -194,17 +159,14 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         {
         case 0:
             movieURL = URL(string: "https://api.themoviedb.org/3/movie/now_playing?&api_key=\(movieAPIKey)&language="+language+"&page=1&region="+region+"")
-            UIApplication.shared.isNetworkActivityIndicatorVisible = true
             api.nowPlayingMovies(movieURL!)
             self.title = "Now Playing"
         case 1:
             movieURL = URL(string: "https://api.themoviedb.org/3/movie/popular?&api_key=\(movieAPIKey)&language="+language+"&page=1&region="+region+"")
-            UIApplication.shared.isNetworkActivityIndicatorVisible = true
             api.nowPlayingMovies(movieURL!)
             self.title = "Popular"
         case 2:
             movieURL = URL(string: "https://api.themoviedb.org/3/movie/upcoming?&api_key=\(movieAPIKey)&language="+language+"&page=1&region="+region+"")
-            UIApplication.shared.isNetworkActivityIndicatorVisible = true
             api.nowPlayingMovies(movieURL!)
             self.title = "Upcoming"
         default:

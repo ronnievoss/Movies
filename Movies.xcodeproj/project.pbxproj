@@ -20,6 +20,7 @@
 		2E86AF861A1ADB160079CBFF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2E86AF851A1ADB160079CBFF /* Images.xcassets */; };
 		2E86AF891A1ADB160079CBFF /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2E86AF871A1ADB160079CBFF /* LaunchScreen.xib */; };
 		2E86AF951A1ADB160079CBFF /* MoviesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E86AF941A1ADB160079CBFF /* MoviesTests.swift */; };
+		2E9DD6B72341B02800B78624 /* CollectionViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9DD6B62341B02800B78624 /* CollectionViewControllerExtension.swift */; };
 		2EC13CF91B7EE67200641136 /* MovieDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC13CF81B7EE67200641136 /* MovieDetail.swift */; };
 		2ECD45591AC7A3D100C654ED /* billow.png in Resources */ = {isa = PBXBuildFile; fileRef = 2ECD45581AC7A3D100C654ED /* billow.png */; };
 		2ED4D21D1AAB63F200001FA7 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED4D21C1AAB63F200001FA7 /* CollectionViewController.swift */; };
@@ -57,6 +58,7 @@
 		2E86AF8E1A1ADB160079CBFF /* MoviesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoviesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E86AF931A1ADB160079CBFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2E86AF941A1ADB160079CBFF /* MoviesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesTests.swift; sourceTree = "<group>"; };
+		2E9DD6B62341B02800B78624 /* CollectionViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewControllerExtension.swift; sourceTree = "<group>"; };
 		2EC13CF81B7EE67200641136 /* MovieDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieDetail.swift; sourceTree = "<group>"; };
 		2ECD45581AC7A3D100C654ED /* billow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = billow.png; sourceTree = "<group>"; };
 		2ED4D21C1AAB63F200001FA7 /* CollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				2E37FD331B6EECD800309C5D /* Models */,
 				2E86AF7C1A1ADB160079CBFF /* AppDelegate.swift */,
 				2ED4D21C1AAB63F200001FA7 /* CollectionViewController.swift */,
+				2E9DD6B62341B02800B78624 /* CollectionViewControllerExtension.swift */,
 				2E3C5DC91B9B8A18004F90DE /* CreditsViewController.swift */,
 				2E86AF7E1A1ADB160079CBFF /* SearchViewController.swift */,
 				2E86AF801A1ADB160079CBFF /* DetailViewController.swift */,
@@ -217,12 +220,12 @@
 			attributes = {
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 1030;
+				LastUpgradeCheck = 1220;
 				ORGANIZATIONNAME = "Ronnie Voss";
 				TargetAttributes = {
 					2E86AF761A1ADB160079CBFF = {
 						CreatedOnToolsVersion = 6.1;
-						DevelopmentTeam = TR69BU35V2;
+						DevelopmentTeam = TY3872H367;
 						LastSwiftMigration = 1030;
 						ProvisioningStyle = Automatic;
 					};
@@ -287,6 +290,7 @@
 				2EC13CF91B7EE67200641136 /* MovieDetail.swift in Sources */,
 				2E3C5DCA1B9B8A18004F90DE /* CreditsViewController.swift in Sources */,
 				2E37FD351B6EED2A00309C5D /* MovieAPI.swift in Sources */,
+				2E9DD6B72341B02800B78624 /* CollectionViewControllerExtension.swift in Sources */,
 				2E86AF7D1A1ADB160079CBFF /* AppDelegate.swift in Sources */,
 				2E37FD371B6F0DC600309C5D /* Movies.swift in Sources */,
 				2EDE94C91B82ACDC000226FC /* SearchHeaderView.swift in Sources */,
@@ -356,6 +360,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -377,7 +382,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -408,6 +413,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -426,7 +432,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -441,11 +447,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = TR69BU35V2;
+				DEVELOPMENT_TEAM = TY3872H367;
 				INFOPLIST_FILE = Movies/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.rvoss.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ronvoss.Movies;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Movies/Movies-Bridging-Header.h";
@@ -462,12 +468,12 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = TR69BU35V2;
+				DEVELOPMENT_TEAM = TY3872H367;
 				INFOPLIST_FILE = Movies/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.rvoss.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ronvoss.Movies;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Movies/Movies-Bridging-Header.h";
